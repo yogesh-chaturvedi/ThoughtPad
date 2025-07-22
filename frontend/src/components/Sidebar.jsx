@@ -3,9 +3,13 @@ import { context } from '../contexts/context';
 
 const Sidebar = () => {
 
-  let sidebarTab = ['Home', 'Notepad', 'My Library', 'Setting'];
+  let sidebarTab = [
+    { tab: 'Home', icon: <i className="fa-solid fa-house"></i> },
+    { tab: 'Notepad', icon: <i className="fa-solid fa-book"></i> },
+    { tab: 'Setting', icon: <i className="fa-solid fa-gear"></i> }
+  ]
+
   const { activated, setActivated } = useContext(context);
-  
 
   //  to set activated tab 
   function handleTabs(clickedTab) {
@@ -16,10 +20,10 @@ const Sidebar = () => {
     <div className="sidebar bg-white relative border-r-2 rounded-tl-2xl w-[210px] h-[90.2vh] px-2 text-lg">
       <div className='flex gap-3 flex-col py-3'>
         {/* tabs */}
-        {sidebarTab.map((tab, index) => {
-          return <div key={index} onClick={() => handleTabs(tab)} className={`flex py-1 gap-1 items-center hover:bg-blue-200 rounded-md cursor-pointer ${activated === tab ? 'bg-blue-100' : ''}`}>
-            <span className='w-7 text-center'><i className="fa-solid fa-house"></i></span>
-            <span className='font-bold'>{tab}</span>
+        {sidebarTab.map((tabs, index) => {
+          return <div key={index} onClick={() => handleTabs(tabs.tab)} className={`flex py-1 gap-1 items-center hover:bg-blue-200 rounded-md cursor-pointer ${activated === tabs.tab ? 'bg-blue-100' : ''}`}>
+            <span className='w-7 text-center'>{tabs.icon}</span>
+            <span className='font-bold'>{tabs.tab}</span>
           </div>
         })}
       </div>

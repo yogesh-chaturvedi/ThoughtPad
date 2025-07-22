@@ -8,7 +8,6 @@ const NotePad = () => {
                 Start Writing Your Thoughts...
             </div>
 
-
             {/* text box */}
             <div className="border border-gray-300 bg-gray-100 absolute bottom-5 rounded-xl w-[60%] h-[70px] shadow-sm">
                 <textarea className="bg-gray-100 px-3 py-2 rounded-xl outline-none w-full h-full resize-none text-gray-800 placeholder-gray-500" placeholder="Write your note here..." name="textarea"></textarea>

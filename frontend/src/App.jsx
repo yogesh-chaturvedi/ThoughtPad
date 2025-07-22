@@ -1,25 +1,17 @@
-import { useContext, useState } from 'react'
-import Navbar from './components/Navbar'
-import Sidebar from './components/Sidebar'
-import Home from './pages/Home'
-import { context } from './contexts/context'
-import NotePad from './pages/NotePad'
-import Setting from './pages/Setting'
-import Library from './pages/Library'
+import { useState } from 'react'
+import { Routes, Route } from 'react-router-dom'
+import Main from './pages/Main'
+import Login from './pages/Login'
+import Signup from './pages/Signup'
 
 function App() {
-  const { activated, setActivated } = useContext(context)
+
   return (
-    <div className='bg-blue-100 px-1'>
-      <Navbar />
-      <div className='flex'>
-        <Sidebar />
-        {activated === 'Home' ? <Home /> : ""}
-        {activated === 'Notepad' ? <NotePad /> : ""}
-        {activated === 'Setting' ? <Setting /> : ""}
-        {activated === 'My Library' ? <Library /> : ""}
-      </div>
-    </div>
+    <Routes>
+      <Route path='/' element={<Main />} />
+      <Route path='/login' element={<Login />} />
+      <Route path='/signup' element={<Signup />} />
+    </Routes>
   )
 }
 
