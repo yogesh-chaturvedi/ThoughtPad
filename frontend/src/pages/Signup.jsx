@@ -22,7 +22,7 @@ const Signup = () => {
                 url: 'http://localhost:3000/auth/signup',
                 data: signupData
             })
-            console.log(response.data)
+            const { success, message } = response.data
         }
         catch (error) {
             console.log("there is an error", error)
