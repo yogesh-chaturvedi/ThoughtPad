@@ -22,7 +22,8 @@ const Login = () => {
                 url: 'http://localhost:3000/auth/login',
                 data: loginData
             })
-            console.log(response.data)
+            const { userName, userEmail, userId, message, success ,key} = response.data
+            console.log(userName, userEmail, userId, message, success, key)
         }
         catch (error) {
             console.log("there is an error", error)

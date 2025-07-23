@@ -12,8 +12,9 @@ const Signup = () => {
     function handleChange(e) {
         setsignupData((prev) => ({ ...prev, [e.target.name]: e.target.value }))
     }
-    console.log(signupData)
+    // console.log(signupData)
 
+    // for sign up
     async function handleSubmit(e) {
         e.preventDefault()
         try {
@@ -22,12 +23,14 @@ const Signup = () => {
                 url: 'http://localhost:3000/auth/signup',
                 data: signupData
             })
-            const { success, message } = response.data
+            const { success, message } = response.data;
+            console.log(message)
         }
         catch (error) {
             console.log("there is an error", error)
         }
     }
+
     return (
         <div className='min-h-screen flex justify-center bg-slate-200 items-center'>
 
