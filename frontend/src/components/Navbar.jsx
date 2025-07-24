@@ -1,6 +1,15 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { context } from '../contexts/context'
+
 
 const Navbar = () => {
+
+    const { activated, setActivated } = useContext(context)
+
+    function handleNewNote() {
+        setActivated('Notepad')
+    }
+
     return (
         <div>
             <div className='flex justify-between px-4 py-5 bg-blue-100'>
@@ -13,7 +22,7 @@ const Navbar = () => {
                 </div>
                 {/* buttons */}
                 <div className='buttons flex gap-5 items-center mr-2'>
-                    <button className='font-semibold bg-blue-500 rounded-lg px-2'><i className="fa-solid fa-pencil"></i> New Note</button>
+                    <button onClick={handleNewNote} className='font-semibold bg-blue-500 rounded-lg px-2'><i className="fa-solid fa-pencil"></i> New Note</button>
                     <span><i className="fa-solid fa-user text-xl"></i></span>
                 </div>
             </div>

@@ -5,7 +5,8 @@ dotenv.config()
 const cors = require('cors')
 const bodyParser = require('body-parser')
 const app = express()
-const AuthRoutes = require('./routes/Authentication')
+const AuthRoute = require('./routes/Authentication')
+const NotesRoute = require('./routes/NotesRoutes')
 
 const port = process.env.PORT || 3000
 
@@ -15,7 +16,8 @@ app.get('/', (req, res) => {
 
 app.use(bodyParser.json())
 app.use(cors())
-app.use('/auth', AuthRoutes)
+app.use('/auth', AuthRoute)
+app.use('/notes', NotesRoute)
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)

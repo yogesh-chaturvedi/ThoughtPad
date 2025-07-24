@@ -1,13 +1,18 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useContext, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import { ToastContainer, toast } from 'react-toastify';
+import { context } from '../contexts/context';
 
 const Login = () => {
+    const { refetchNotes } = useContext(context)
+
 
     const [loginData, setloginData] = useState({
         email: '',
         password: ''
     })
+    const navigate = useNavigate()
 
     function handleChange(e) {
         setloginData((prev) => ({ ...prev, [e.target.name]: e.target.value }))
@@ -22,8 +27,29 @@ const Login = () => {
                 url: 'http://localhost:3000/auth/login',
                 data: loginData
             })
-            const { userName, userEmail, userId, message, success ,key} = response.data
-            console.log(userName, userEmail, userId, message, success, key)
+            const { userName, userEmail, userId, message, success, key } = response.data
+            if (success) {
+                localStorage.setItem("userName", userName)
+                localStorage.setItem("userEmail", userEmail)
+                localStorage.setItem("userId", userId)
+                localStorage.setItem("NoteToken", key)
+                refetchNotes()
+                toast(message, {
+                    position: "top-center",
+                    autoClose: 1500,
+                    hideProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                });
+
+                setTimeout(() => {
+                    navigate('/')
+                }, 2000);
+            }
+
         }
         catch (error) {
             console.log("there is an error", error)
@@ -32,11 +58,12 @@ const Login = () => {
 
     return (
 
-        <div className="min-h-screen flex justify-center bg-slate-200  items-center ">
+        <div className="min-h-screen flex justify-center bg-slate-200 items-center ">
+            <ToastContainer position="top-center" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick={false} rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="dark" />
 
             <div className="login border-2 border-slate-300 shadow-xl bg-slate-100  rounded-xl w-[90vw] sm:w-[65vw] md:w-[55vw] lg:w-[45vw] flex flex-col gap-5 py-5 justify-center items-center">
                 <h1 className='font-bold text-2xl underline'>LogIn</h1>
-                {/* onSubmit={handleSubmit} */}
+
                 <form className='flex gap-3 flex-col w-[80%]' onSubmit={handleSubmit} >
 
                     <div className='w-full '>
