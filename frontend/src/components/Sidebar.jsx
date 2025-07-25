@@ -13,7 +13,7 @@ const Sidebar = () => {
     { tab: 'Setting', icon: <i className="fa-solid fa-gear"></i> }
   ]
 
-  const { activated, setActivated, notesData, setNotesData, refetchNotes } = useContext(context);
+  const { activated, setActivated, notesData, setNotesData, refetchNotes, titleToEdit, setTitleToEdit, idToEdit, setIdToEdit, NoteState, setNoteState } = useContext(context);
 
   useEffect(() => {
     console.log('data')
@@ -81,15 +81,24 @@ const Sidebar = () => {
   }
 
 
-  function handleEdit(indexToEdit) {
+  function handleEdit(indexToEdit, titleId) {
     // to open notepad
     if (activated !== 'Notepad') {
       setActivated('Notepad')
     }
-    console.log(indexToEdit)
+    setTitleToEdit(indexToEdit)
+    setIdToEdit(titleId)
 
   }
+  // console.log('titleToEdit', titleToEdit)
 
+
+  function handleClick(NotesId) {
+    if (activated !== 'Home') {
+      setActivated('Home')
+    }
+    setNoteState(NotesId)
+  }
 
   return (
     <div className="sidebar bg-white relative border-r-2 rounded-tl-2xl w-[210px] h-[90.2vh] px-2 text-lg">
@@ -122,7 +131,7 @@ const Sidebar = () => {
             return (
               <div key={index} className='relative flex items-center gap-2 mr-3 px-2 py-1 hover:bg-gray-100 rounded-md'>
                 <span><i className="fa-solid fa-folder"></i></span>
-                <span className='w-[80%] truncate'>{items.title}</span>
+                <span onClick={() => { handleClick(items._id) }} className='w-[80%] truncate cursor-pointer'>{items.title}</span>
 
                 {/* Three dots */}
                 <span onClick={() => { openOption(index) }} className='relative z-10 hover:bg-slate-300 px-1 rounded-md cursor-pointer'>
@@ -133,7 +142,7 @@ const Sidebar = () => {
                     <div className='absolute bottom-full right-0 mb-1 bg-blue-300  rounded-lg flex flex-col gap-1 w-[70px] text-sm z-50'>
                       <button onClick={() => handleDelete(items._id)} className='hover:bg-blue-400 px-2 py-1 text-left'>Delete</button>
                       <div className="bg-black w-full h-0.5"></div>
-                      <button onClick={() => { handleEdit(index) }} className='hover:bg-blue-400 px-2 py-1 text-left'>Edit</button>
+                      <button onClick={() => { handleEdit(index, items._id) }} className='hover:bg-blue-400 px-2 py-1 text-left'>Edit</button>
                     </div>
                   )}
                 </span>

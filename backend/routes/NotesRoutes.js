@@ -49,13 +49,36 @@ router.delete('/remove', userValidation, async (req, res) => {
         if (Notes) {
             res.status(200).json({ message: 'delete successfully', success: true, Notes })
         }
-        else{
+        else {
 
             res.status(404).json({ message: 'there is not note like this', success: false })
         }
     }
     catch (error) {
         res.status(500).json({ message: 'delete Unsuccessfully', success: false })
+    }
+})
+
+
+
+// to edit 
+router.put('/edit', userValidation, async (req, res) => {
+    const { title, idToEdit } = req.body
+
+    try {
+        const Note = await UserNotes.findById(idToEdit)
+        if (!Note) {
+            return res.status(404).json({ message: 'Note Not Found', success: false })
+        }
+
+        // update the values and content 
+        Note.title = title.title
+        Note.content = title.content
+        await Note.save();
+        res.status(200).json({ message: 'Updated Successfully', success: true, Note })
+    }
+    catch (error) {
+        res.status(500).json({ message: 'update Unsuccessfully', success: false })
     }
 })
 module.exports = router

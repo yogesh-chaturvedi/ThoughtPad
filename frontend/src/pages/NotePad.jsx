@@ -1,11 +1,12 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import axios from 'axios'
 import { context } from '../contexts/context'
 
 const NotePad = () => {
 
-    const { refetchNotes } = useContext(context)
-
+    const { refetchNotes, titleToEdit, setTitleToEdit, notesData, setNotesData, idToEdit, setIdToEdit } = useContext(context)
+    // console.log(titleToEdit)
+    console.log('idToEdit', idToEdit)
     const [title, setTitle] = useState({
         title: '',
         content: ''
@@ -17,26 +18,64 @@ const NotePad = () => {
 
     async function handleSubmit(e) {
         e.preventDefault();
-        try {
-            const token = localStorage.getItem('NoteToken')
-            const response = await axios({
-                method: "post",
-                url: 'http://localhost:3000/notes/add',
-                headers: {
-                    Authorization: token
-                },
-                data: title
-            })
-            const { message, success, error } = response.data
-            if (success) {
-                refetchNotes()
+        const token = localStorage.getItem('NoteToken')
+        // to add
+        if (titleToEdit === null) {
+            try {
+                const response = await axios({
+                    method: "post",
+                    url: 'http://localhost:3000/notes/add',
+                    headers: {
+                        Authorization: token
+                    },
+                    data: title  // its a full data along with content
+                })
+                const { message, success, error } = response.data
+                if (success) {
+                    refetchNotes();
+                }
+                console.log(message);
             }
-            console.log(message);
+            catch (error) {
+                console.log("there is an error", error)
+            }
         }
-        catch (error) {
-            console.log("there is an error", error)
+
+        // for edit 
+        if (titleToEdit !== null) {
+            try {
+                const response = await axios({
+                    method: 'put',
+                    url: 'http://localhost:3000/notes/edit',
+                    headers: {
+                        Authorization: token
+                    },
+                    data: { title, idToEdit } // contains whole data along with content
+                })
+                const { message, error, success, Note } = response.data
+                if (success) {
+                    console.log(message)
+                    refetchNotes();
+                    setTitleToEdit(null);
+                }
+            }
+            catch (error) {
+                console.log("there is an error", error)
+            }
         }
     }
+
+    // to add the tile and content in fields when someone clck on them
+    useEffect(() => {
+        if (titleToEdit !== null) {
+            const note = notesData[titleToEdit]
+            setTitle({ title: note.title, content: note.content })
+        }
+        else {
+            setTitle({ title: "", content: "" })
+        }
+
+    }, [titleToEdit, notesData])
 
 
 

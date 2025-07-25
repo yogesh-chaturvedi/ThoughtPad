@@ -6,6 +6,9 @@ export const context = createContext();
 const ContextProvider = (props) => {
     const [activated, setActivated] = useState('Home');
     const [notesData, setNotesData] = useState([])
+    const [titleToEdit, setTitleToEdit] = useState(null)
+    const [idToEdit, setIdToEdit] = useState(null)
+    const [NoteState, setNoteState] = useState(null)
 
     // to fetch data
     const getData = async () => {
@@ -35,7 +38,7 @@ const ContextProvider = (props) => {
 
 
 
-    const value = { activated, setActivated, notesData, setNotesData, refetchNotes: getData };
+    const value = { activated, setActivated, notesData, setNotesData, refetchNotes: getData, titleToEdit, setTitleToEdit, idToEdit, setIdToEdit, NoteState, setNoteState };
     return (
         <context.Provider value={value}>
             {props.children}
