@@ -1,14 +1,53 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { context } from '../contexts/context'
+import axios from 'axios'
 
 
 const Navbar = () => {
 
-    const { activated, setActivated } = useContext(context)
+    const { activated, setActivated, notesData, setNotesData, refetchNotes } = useContext(context)
+    const [searchedText, setSearchedText] = useState("")
 
     function handleNewNote() {
         setActivated('Notepad')
     }
+
+    function handleChange(e) {
+        setSearchedText(e.target.value)
+    }
+    console.log(searchedText)
+
+    useEffect(() => {
+        async function searchNote() {
+            const token = localStorage.getItem('NoteToken')
+            try {
+
+                if (searchedText.trim() === '') {
+                    await refetchNotes();
+                    return;
+                }
+
+
+                const response = await axios({
+                    method: 'get',
+                    url: `http://localhost:3000/search/searching?query=${searchedText}`,
+                    headers: {
+                        Authorization: token
+                    }
+                })
+                const { message, success, error, searchedTitle } = response.data;
+                if (success) {
+                    console.log(message);
+                    setNotesData(searchedTitle)
+
+                }
+            }
+            catch (error) {
+                console.log("there is an error", error)
+            }
+        }
+        searchNote()
+    }, [searchedText])
 
     return (
         <div>
@@ -18,7 +57,7 @@ const Navbar = () => {
                 {/* search */}
                 <div className='w-[40vw] bg-white text-center rounded-md px-1 border-2 border-black items-center justify-center flex'>
                     <span><i className="fa-solid fa-magnifying-glass"></i></span>
-                    <input className='rounded-xl px-1 w-full outline-none' type="text" placeholder='Search' />
+                    <input value={searchedText} onChange={handleChange} className='rounded-xl px-1 w-full outline-none' type="text" placeholder='Search' />
                 </div>
                 {/* buttons */}
                 <div className='buttons flex gap-5 items-center mr-2'>

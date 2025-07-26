@@ -7,6 +7,7 @@ const bodyParser = require('body-parser')
 const app = express()
 const AuthRoute = require('./routes/Authentication')
 const NotesRoute = require('./routes/NotesRoutes')
+const SearchRoute = require('./routes/SearchRoutes')
 
 const port = process.env.PORT || 3000
 
@@ -18,6 +19,7 @@ app.use(bodyParser.json())
 app.use(cors())
 app.use('/auth', AuthRoute)
 app.use('/notes', NotesRoute)
+app.use('/search', SearchRoute)
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
