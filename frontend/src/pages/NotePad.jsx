@@ -12,12 +12,21 @@ const NotePad = () => {
         content: ''
     })
 
+    // to add data on use state in realtime
     function handleChange(e) {
         setTitle((prev) => ({ ...prev, [e.target.name]: e.target.value }))
     }
 
+
+    function handleEnter(e) {
+        if (e.key === 'Enter' && !e.shiftKey && e.target.name === 'title') {
+            e.preventDefault();
+            handleSubmit()
+        }
+    }
+
     async function handleSubmit(e) {
-        e.preventDefault();
+        // e.preventDefault();
         const token = localStorage.getItem('NoteToken')
         // to add
         if (titleToEdit === null) {
@@ -90,13 +99,13 @@ const NotePad = () => {
             <form className='flex flex-col gap-1 absolute bottom-14 w-[60%] h-[120px]' onSubmit={handleSubmit}>
                 {/* title */}
                 <div className='flex gap-2'>
-                    <input value={title.title} onChange={handleChange} className='bg-gray-300 px-3 py-2 rounded-xl outline-none w-[30%]' placeholder='enter title' name='title' type="text" />
+                    <input value={title.title} onKeyDown={handleEnter} onChange={handleChange} className='bg-gray-300 px-3 py-2 rounded-xl outline-none w-[30%]' placeholder='enter title' name='title' type="text" />
                     <button type='submit' className='px-2 py-1 bg-blue-500 rounded-xl '>Add</button>
                 </div>
 
                 {/* text box */}
                 <div className="bg-gray-200 rounded-xl w-full h-full">
-                    <textarea value={title.content} onChange={handleChange} className="bg-gray-300 px-3 py-2 rounded-xl outline-none w-full h-full resize-none text-gray-800 placeholder-gray-500" placeholder="Write your note here..." name="content"></textarea>
+                    <textarea value={title.content} onKeyDown={handleEnter} onChange={handleChange} className="bg-gray-300 px-3 py-2 rounded-xl outline-none w-full h-full resize-none text-gray-800 placeholder-gray-500" placeholder="Write your note here..." name="content"></textarea>
                 </div>
             </form>
 
